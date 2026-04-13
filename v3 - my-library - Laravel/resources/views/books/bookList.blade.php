@@ -9,7 +9,7 @@
         </div>
         <div class="row"> 
             <div class="col-xs-12 mb-3 text-end">
-                <a href="creaLibro.php" class="btn btn-success"> Aggiungi libro</a>
+                <a href="{{ route('book.form') }}" class="btn btn-success"> Aggiungi libro</a>
             </div>
         </div>
         <div class="card">
@@ -25,18 +25,18 @@
                             </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($books as $book) : ?>
+                        @foreach ($books as $book)
                         <tr>
-                            <td> {{ $book['title'] }}</td>
-                            <td><?php echo $book['author']; ?></td>
-                            <td><?php echo $book['genre']; ?></td>
-                            <td>€ <?php echo number_format($book['price'], 2, ',', '.'); ?></td>
+                            <td> {{ $book->title }}</td>
+                            <td> {{ $book->author->name }} {{ $book->author->surname }} </td>
+                            {{-- <td><?php echo $book['genre']; ?></td> --}}
+                            <td>€ {{ number_format($book->price, 2, ',', '.') }}</td>
+                            <td> {{ $book->year }}</td>
                             <td>
-                                <a class="btn btn-sm btn-primary" href="dettagliLibro.php?id=<?php echo $book['id']; ?>"> Visualizza </a>
-                                <a class="btn btn-sm btn-warning" href="modificaLibro.php?id=<?php echo $book['id']; ?>"> Modifica </a>
+                                <a class="btn btn-sm btn-primary" href="{{ route('book.details', ['bookId' => $book['id']]) }}"> Visualizza </a>
+                                <a class="btn btn-sm btn-warning" href="{{ route('book.form', ['bookId' => $book['id']]) }}"> Modifica </a>
 
-                                <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaleEliminaLibro_<?php echo $book['id']; ?>"> Elimina </a>
-                            </td>
+                                {{-- <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaleEliminaLibro_<?php echo $book['id']; ?>"> Elimina </a> --}}
                         </tr>
                         
                         <?php endforeach; ?>

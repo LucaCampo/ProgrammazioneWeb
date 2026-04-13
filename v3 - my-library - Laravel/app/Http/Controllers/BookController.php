@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Author;
 
 class BookController extends Controller
 {
@@ -13,25 +14,26 @@ class BookController extends Controller
 
     }
 
-    public function details($bookId) {
+    public function detailsOrFail($bookId) {
         $book = Book::find($bookId);
         return view('books.bookDetails', ["book"=>$book]);
     }
 
 
     public function viewForm($bookId = null) {
-        $book=[
-                "id" => null,
-                "title" => null,
-                "author" => null,
-                "genre" => null,
-                "price" => null,
-                "image" => null
-            ];
+        $book= new Book();
+        
         if($bookId){
-            $book = Book::find($bookId);
+            $book = Book::findOrFail($bookId);
         }
-        return redirect()->route('book.index');
+        $authors = Author::all();
+
+        return view('books.bookForm', [
+            'book'=>$book, 
+            'authors'=>$authors
+        ]);
+
+        //return redirect()->route('book.index');
     }
 
 
@@ -39,28 +41,34 @@ class BookController extends Controller
     // Input data of the book to create
     public function createBook(Request $request){
         $title = $request->input('title');
-        //$author = $request->input('author');
-        //$genre = $request->input('genre');
         $price = $request->input('price');
         $year = $request->input('year');
+        $authorId = $request->input('author');
 
         $book = new Book();
         $book->title = $title;
-        //$book->author = $author;
-        //$book->genre = $genre;
+        $book->author_id = $authorId;
         $book->price = $price;
         $book->year = $year;
         $book->save();
 
-        return "This function should create the book";
+        return redirect()->route('book.index');
     }
 
     // Input data of the book to edit + $idBook
-    public function editBook(request $request){
-        $idBook = $request->input('id');
-        $book = Book::findOrFail($idBook);
+    public function editBook(request $request, $bookId){
 
+        $title = $request->input('title');
+        $price = $request->input('price');
+        $year = $request->input('year');
+        $authorId = $request->input('author');
 
+        $book = Book::findOrFail($bookId);
+        $book->title = $title;
+        $book->author_id = $authorId;
+        $book->price = $price;
+        $book->year = $year;
+        $book->save();
         return redirect()->route('book.index'); 
     }
 
