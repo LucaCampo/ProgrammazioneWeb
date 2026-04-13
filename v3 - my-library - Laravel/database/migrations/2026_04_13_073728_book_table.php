@@ -14,8 +14,7 @@ return new class extends Migration
         //
         Schema ::table('books', function (Blueprint $table) {
 
-            $table -> decimal('price', 8, 2);
-            $table -> softDeletes('deleted_at', precision: 0);
+            $table -> foreignId('author_id') -> constrained();
             
         });
     }

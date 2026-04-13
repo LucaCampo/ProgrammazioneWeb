@@ -8,7 +8,7 @@ use App\Http\Controllers\BookController;
 
 
 Route::get('/', [HomeController::class, 'getHome'])->name('home');
-Route::get('/sayHello/{saluto?}', [HomeController::class, 'sayHello'])->name('home.sayHello');
+Route::get('/queryExample/{id?}', [HomeController::class, 'queryExample'])->name('home.queryExample');
 
 
 ######## Routing diretto

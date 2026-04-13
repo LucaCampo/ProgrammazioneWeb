@@ -12,6 +12,8 @@ class Book extends Model
     use HasFactory;
     use SoftDeletes;
 
+    // protected $table = 'books'; personalizzo nome tabella
+
 
     protected $fillable = [
         'title',
